@@ -1,0 +1,26 @@
+<div class="col-sm-4">
+    <div class="thumbnail">
+        <img id="houseImg" ng-src="images/{{house.image}}.png" alt=""/>
+        <div class="caption">
+            <div ng-hide="showDetails == true">
+                <h4><span class="label label-primary label-sm">{{house.type}}</span></h4>
+                <h3><i class="glyphicon glyphicon-tag"></i>{{house.price| currency:'£':0}}</h3>
+                <h4><i class="glyphicon glyphicon-home"></i> {{house.fullAddress.streetNumber}}, {{house.fullAddress.streetName}}</h4>
+            </div>
+
+            <button class="btn btn-xs btn-success" ng-hide="showDetails === true" ng-click="showDetails = !showDetails">Details</button>
+
+            <div class="details" ng-show="showDetails == true">
+                <h4>
+                    <span class="label label-primary">Bedrooms: {{house.details.bedrooms}}</span>
+                    <span class="label label-primary">Bathrooms: {{house.details.bathrooms}}</span>
+                    <span class="label label-primary">SqrFt: {{house.details.area}}</span>
+                </h4>
+                <p style="color:#FFF;">{{house.description}}</p>
+            </div>
+            <br/>
+            <button class="btn btn-xs btn-primary" ng-if="showDetails && !editListing" ng-click="editHouse(house)">Edit</button>
+            <button class="btn btn-xs btn-danger" ng-show="showDetails" ng-click="showDetails = !showDetails">Close</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+//Set all tags with a class of "price-form" as the following
+.price-form {
+    margin-bottom: 10px;
+    padding: 15px;
+    background-color: #5cb85c;
+}
+//Set all tags with a class of "price-form" as the following
+.price-form {
+    margin-bottom: 10px;
+    padding: 15px;
+    background-color: #5cb85c;
+}
+//Set all tags with a class of "price-form-row" as the following
+.price-form-row {
+    margin-bottom: 10px;
+}
+//Set all tags with classes of "listing-form-row" and "listing-button" as the following
+.listing-form-row, .listing-button {
+    margin-top: 10px;
+}
+//Set all h3 tags with a class of "listing-form" as the following
+.listing-form h3 {
+    color: white;
+}
+//Set all tags with IDs of "headerBar" and "panelHead" as the following
+#headerBar, #panelHead {
+    background-color:#228b22;
+}
+//Set all tags with a IDs of "navBarText" and "panelHeadText" as the following
+#navBarText, #panelHeadText {
+    color:#FFF;
+}
+//Set all image tags with an Id of "houseImg" as the following
+#houseImg {
+    height:220px;
+}
+//Set all divs with a class of "thumbnail" as the following
+.thumbnail {
+    background-color: #98FF98;
+    padding-left:15px;
+    padding-right:15px;
+    padding-top:15px;
+}
+//Set all divs with a class of "details" as the following
+.details {
+    background-color: #5cb85c;
+    height:170px;
+    overflow:auto;
+    padding: 1px 10px 10px 10px;
+}
+
+/* Desktop & Mobile Screens Set to 767 pixels or Below  */
+@media screen and (max-width: 767px) {
+    //Resize the widths of all tags with a class name of "thumbnail" to 100%
+    .thumbnail {
+        width: 100%;
+    }
+    //Resize the top margins of all tags with an ID name of "formInpt" to 10px
+    #formInpt {
+        margin-top:10px;
+    }
+}
+
+/* Desktop & Mobile Screens Set to 640 pixels or Below  */
+@media screen and (max-width: 640px) {
+    
+}
+
+
+/* Desktop & Mobile Screens Set to 480 pixels or Below  */
+@media screen and (max-width: 480px) {
+    .thumbnail {
+        //Resize the left, right and top padding sizes of all tags with a class name of "thumbnail" to 10px
+        padding-left:10px;
+        padding-right:10px;
+        padding-top:10px;
+    }
+    //Resize the left, right and bottom padding sizes of all tags with a class name of "details" to 10px, then resize the height to 200px
+    .details {
+        height:200px;
+        padding-left: 5px;
+        padding-bottom: 5px;
+        padding-right: 5px;
+    }
+}
+
+/* Desktop & Mobile Screens Set to 320 pixels or below  */
+@media screen and (max-width: 319px) {
+    .details {
+        height:270px;
+        padding-left: 5px;
+        padding-bottom: 5px;
+        padding-right: 5px;
+    }
+}

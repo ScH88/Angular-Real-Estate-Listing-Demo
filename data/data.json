@@ -1,0 +1,93 @@
+[
+    {
+        "id": 1,
+        "type": "Condo",
+        "price": 220000,
+        "fullAddress": {
+            "streetNumber": 415,
+            "streetName": "Richards Street"
+        },
+        "description": "Excellent Place, really nice view!",
+        "details": {
+            "bedrooms": 2,
+            "bathrooms": 1,
+            "area": 921
+        },
+        "image": "house-1"
+     }, {
+        "id": 2,
+        "type": "House",
+        "price": 410500,
+        "fullAddress": {
+            "streetNumber": 8008,
+            "streetName": "Wysteria Way"
+        },
+        "description": "Beautiful home with lots of space for a large family",
+        "details": {
+            "bedrooms": 4,
+            "bathrooms": 3,
+            "area": 2145
+        },
+        "image": "house-2"
+    }, {
+        "id": 3,
+        "type": "Duplex",
+        "price": 395000,
+        "fullAddress": {
+            "streetNumber": 1984,
+            "streetName": "Vienna Lane"
+        },
+        "description": "Great neighbourhood, with lots of green space",
+        "details": {
+            "bedrooms": 3,
+            "bathrooms": 2,
+            "area": 1500
+        },
+        "image": "house-3"
+    }, {
+        "id": 4,
+        "type": "House",
+        "price": 795000,
+        "fullAddress": {
+            "streetNumber": 1788,
+            "streetName": "Black Forest Avenue"
+        },
+        "description": "Best house on the block!",
+        "details": {
+            "bedrooms": 2,
+            "bathrooms": 1,
+            "area": 3230
+        },
+        "image": "house-4"
+    }, {
+        "id": 5,
+        "type": "Condo",
+        "price": 210000,
+        "fullAddress": {
+            "streetNumber": 888,
+            "streetName": "Plymouth Court"
+        },
+        "description": "Nice small condo with room to grow",
+        "details": {
+            "bedrooms": 2,
+            "bathrooms": 1,
+            "area": 1023
+        },
+        "image": "house-5"
+    }, {
+        "id": 6,
+        "type": "House",
+        "price": 334900,
+        "fullAddress": {
+            "streetNumber": 1998,
+            "streetName": "Inglewood Avenue"
+        },
+        "description": "You'll love the view!",
+        "details": {
+            "bedrooms": 4,
+            "bathrooms": 2,
+            "area": 1788
+        },
+        "image": "house-6"
+    }
+]

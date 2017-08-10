@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Angular Real Estate</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js"></script>
+        <script src="app.js"></script>
+        <script src="scripts/realEstateController.js"></script>
+        <script src="scripts/housesFactory.js"></script>
+        <script src="scripts/housesFilter.js"></script>
+        <script src="scripts/directives/numberOnly.js"></script>
+        <script src="scripts/directives/inputLimit.js"></script>
+        <script src="scripts/directives/reListing.js"></script>
+    </head>
+    <!-- ng-app: Anything in the body tag will be made available to the whole application -->
+    <body ng-app="RealEstateApp" ng-controller="RealEstateController">
+        <!-- Nav bar -->
+        <nav class="navbar navbar-default">
+            <div id="headerBar" class="container-fluid">
+                <div class="navbar-header">
+                    <a id="navBarText" class="navbar-brand" href="#"><strong>Angular Real Estate</strong></a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="panel panel-default">
+                <div id="panelHead" class="panel-heading">
+                    <h4 id="panelHeadText"><strong>{{editorMode}}</strong></h4>
+                </div>
+                <!-- Min and Max Price Selection -->
+                <div class="col-sm-12 price-form">
+                    <div class="row price-form-row" ng-show="!addListing && !editListing">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Sorter</span>
+                                <select name="orderByValForm" id="orderByValForm" ng-model="orderFormVal" ng-change="sortTypeOnChange()" class="form-control">
+                                    <option value="fullAddress.streetNumber">Sort By Address (Number)</option>
+                                    <option value="fullAddress.streetName">Sort By Address (Street Name)</option>
+                                    <option value="price">Sort By Price</option>
+                                    <option value="type">Sort By House Type</option>
+                                    <option value="details.bedrooms">Sort By Bedrooms</option>
+                                    <option value="details.bathrooms">Sort By Bathrooms</option>
+                                    <option value="details.area">Sort By Area</option>
+                                </select>
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="row price-form-row" ng-show="!addListing && !editListing">
+                        <div class="col-sm-12">
+                            <button 
+                                class="btn btn-primary" 
+                                ng-click="ascendResults()"
+                                >Forward
+                            </button>
+                            <button 
+                                class="btn btn-primary" 
+                                ng-click="descendResults()"
+                                >Reverse
+                            </button>
+                        </div> 
+                    </div>
+
+                    <div class="row price-form-row" ng-show="!addListing && !editListing">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Min Price</span>
+                                <select name="minPrice" id="minPrice" ng-model="priceInfo.min" class="form-control">
+                                    <option value="100000">£100,000</option>
+                                    <option value="200000">£200,000</option>
+                                    <option value="300000">£300,000</option>
+                                    <option value="400000">£400,000</option>
+                                    <option value="500000">£500,000</option>
+                                    <option value="600000">£600,000</option>
+                                    <option value="700000">£700,000</option>
+                                    <option value="800000">£800,000</option>
+                                    <option value="900000">£900,000</option>
+                                    <option value="1000000">£1,000,000</option>
+                                    <option value="1000000000">Over £1,000,000</option> 
+                                </select>
+                            </div>
+                        </div> 
+                        <div id="formInpt" class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Max Price</span>
+                                <select name="maxPrice" id="maxPrice" ng-model="priceInfo.max" class="form-control">
+                                    <option value="200000">£200,000</option>
+                                    <option value="300000">£300,000</option>
+                                    <option value="400000">£400,000</option>
+                                    <option value="500000">£500,000</option>
+                                    <option value="600000">£600,000</option>
+                                    <option value="700000">£700,000</option>
+                                    <option value="800000">£800,000</option>
+                                    <option value="900000">£900,000</option>
+                                    <option value="1000000">£1,000,000</option>
+                                    <option value="1000000000">Over £1,000,000</option> 
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row price-form-row" ng-show="!addListing && !editListing">
+                        <div class="col-sm-6">
+                            <button 
+                                class="btn btn-primary" 
+                                ng-click="openAddHouse()"
+                                >Add Listing
+                            </button>
+                        </div>
+                    </div>
+                    <div class="listing-form" ng-if="addListing && !editListing">
+                        <div class="row listing-form-row">
+                            <div class="col-sm-4">
+                                <p ng-show="addrValid" style='color:#FF0000;'>{{ addrValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Address</span>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Enter Number" 
+                                        class="form-control" 
+                                        data-input-limit="4"
+                                        number-only="[0-9]"
+                                        ng-model="newListing.fullAddress.streetNumber"/>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Enter Address" 
+                                        class="form-control" 
+                                        data-input-limit="40"
+                                        ng-model="newListing.fullAddress.streetName"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" id="formInpt">
+                                <p ng-show="priceValid" style='color:#FF0000;'>{{ priceValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Price</span>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Enter the price" 
+                                        class="form-control"
+                                        data-input-limit="9"
+                                        number-only="[0-9]"
+                                        ng-change="convertPriceToInt(existingListing.price)"
+                                        ng-model="newListing.price"/>
+                                </div>
+                            </div>
+                            <div class="col-sm-4" id="formInpt">
+                                <p ng-show="proptValid" style='color:#FF0000;'>{{proptValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Property Type</span>
+                                    <select 
+                                        type="select" 
+                                        name="propertyType" 
+                                        id="propertyType" 
+                                        class="form-control" 
+                                        ng-model="newListing.type">
+                                        <option value="House">House</option>
+                                        <option value="Condo">Condo</option>
+                                        <option value="Duplex">Duplex</option>
+                                        <option value="Apartment">Apartment</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row listing-form-row">
+                            <div class="col-sm-4">
+                                <p ng-show="descrValid" style='color:#FF0000;'> {{descrValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Description</span>
+                                    <textarea 
+                                        type="text" 
+                                        placeholder="Enter the description" 
+                                        class="form-control" 
+                                        data-input-limit="200"
+                                        ng-model="newListing.description">
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">  
+                                <div class="col-sm-4" id="formInpt">
+                                    <p ng-show="bedsValid" style='color:#FF0000;'> {{bedsValid}}</p>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Beds</span>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Bedrooms" 
+                                            class="form-control" 
+                                            data-input-limit="2"
+                                            number-only="[0-9]"
+                                            ng-model="newListing.details.bedrooms"/>
+                                    </div>
+                                </div> 
+                                <div class="col-sm-4" id="formInpt">
+                                    <p ng-show="bathsValid" style='color:#FF0000;'>{{bathsValid}}</p>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Baths</span>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Bathrooms" 
+                                            class="form-control" 
+                                            data-input-limit="2"
+                                            number-only="[0-9]"
+                                            ng-model="newListing.details.bathrooms"/>
+                                    </div>
+                                </div> 
+                                <div class="col-sm-4" id="formInpt">
+                                    <p ng-show="sqrValid" style='color:#FF0000;'>{{sqrValid}}</p>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">SqFt</span>
+                                        <input 
+                                            type="text" 
+                                            placeholder="Square Footage" 
+                                            class="form-control" 
+                                            data-input-limit="6"
+                                            number-only="[0-9]"
+                                            ng-model="newListing.details.area"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row listing-form-row">
+                            <div class="col-sm-7">
+                                <button class="btn btn-primary listing-button"
+                                        ng-click="addHouse(newListing)">Add
+                                </button>
+
+                                <button 
+                                    class="btn btn-danger listing-button" 
+                                    ng-click="reset()">Close
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row listing-form-row">
+                            <div class="col-sm-12">
+                                <pre>{{newListing| json}}</pre>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="listing-form" ng-if="editListing && !addListing">
+                        <div class="row listing-form-row">
+                            <div class="col-sm-4">
+                                <p ng-show="addrValid" style='color:#FF0000;'>{{addrValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Address</span>
+                                    <input 
+                                        type="text"
+                                        placeholder="Enter Street Number"
+                                        class="form-control"
+                                        data-input-limit="4"
+                                        number-only="[0-9]"
+                                        ng-model="existingListing.fullAddress.streetNumber"/>
+                                    <input 
+                                        type="text"
+                                        placeholder="Enter Street Name"
+                                        class="form-control"
+                                        data-input-limit="40"
+                                        ng-model="existingListing.fullAddress.streetName"/>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" id="formInpt">
+                                <p ng-show="priceValid" style='color:#FF0000;'>{{priceValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Price</span>
+                                    <input 
+                                        type="text"
+                                        placeholder="Enter the price"
+                                        class="form-control"
+                                        data-input-limit="9"
+                                        number-only="[0-9]"
+                                        ng-change="convertPriceToInt(existingListing.price)"
+                                        ng-model="existingListing.price"/>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4" id="formInpt">
+                                <p ng-show="prptValid" style='color:#FF0000;'>{{prptValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Property Type</span>
+                                    <select 
+                                        type="select"
+                                        name="propertyType"
+                                        id="propertyType" 
+                                        class="form-control" 
+                                        ng-model="existingListing.type">
+                                        <option value="House">House</option>
+                                        <option value="Condo">Condo</option>
+                                        <option value="Duplex">Duplex</option>
+                                        <option value="Apartment">Apartment</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row listing-form-row">
+                            <div class="col-sm-4">
+                                <p ng-show="descrValid" style='color:#FF0000;'>{{descrValid}}</p>
+                                <div class="input-group">
+                                    <span class="input-group-addon">Description</span>
+                                    <textarea 
+                                        type="text"
+                                        placeholder="Enter the description"
+                                        class="form-control"
+                                        data-input-limit="200"
+                                        ng-model="existingListing.description">
+                                    </textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-8">
+
+                                <div class="col-sm-4" id="formInpt">
+                                    <p ng-show="bedsValid" style='color:#FF0000;'>{{bedsValid}}</p>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Beds</span>
+                                        <input 
+                                            type="text"
+                                            placeholder="Bedrooms"
+                                            class="form-control"
+                                            data-input-limit="2"
+                                            number-only="[0-9]"
+                                            ng-model="existingListing.details.bedrooms"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4" id="formInpt">
+                                    <p ng-show="bathsValid" style='color:#FF0000;'>{{bathsValid}}</p>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Baths</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Bathrooms"
+                                            class="form-control"
+                                            data-input-limit="2"
+                                            number-only="[0-9]"
+                                            ng-model="existingListing.details.bathrooms"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4" id="formInpt">
+                                    <p ng-show="sqrValid" style='color:#FF0000;'>{{sqrValid}}</p>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">SqFt</span>
+                                        <input
+                                            type="text"
+                                            placeholder="Square Footage"
+                                            class="form-control"
+                                            data-input-limit="4"
+                                            number-only="[0-9]"
+                                            ng-model="existingListing.details.area"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row listing-form-row">
+                            <div class="col-sm-8">
+                                <button 
+                                    class="btn btn-primary listing-button"
+                                    ng-click="saveHouseEdit(existingListing)">Save
+                                </button> 
+                                <button 
+                                    class="btn btn-danger listing-button" 
+                                    ng-click="deleteHouse(existingListing)">Delete
+                                </button>
+                                <button 
+                                    class="btn btn-danger listing-button" 
+                                    ng-click="reset()">Close
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+
+            <!-- Real Estate Listings -->
+            <div class="row">
+                <div ng-repeat="house in houses| housesFilter:priceInfo | orderBy:orderByVal">
+                    <div class="clearfix" ng-if="$index % 3 == 0"></div>
+                    <div>
+                        <re-listing house='house' edit-house='editHouse(house)' show-details='showDetails' edit-listing='editListing'>
+                        </re-listing>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </body>
+</html>
